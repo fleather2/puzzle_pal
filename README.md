@@ -1,1 +1,1 @@
-# churck_of_freigns
+# church_of_freigns
