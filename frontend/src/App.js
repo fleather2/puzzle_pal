@@ -1,25 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function PuzzleRow( { puzzle }) {
+  // TODO define puzzle with partnernames
+  //const partnerName = puzzle;
+  const isComplete = puzzle.isComplete ? "Yes" : "No";
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <tr>
+      <td>{puzzle.name}</td>
+      <td>{puzzle.participants}</td>
+      <td>{isComplete}</td>
+    </tr>
   );
 }
 
+function PuzzleTable( { puzzles }) {
+  const rows = [];
+  puzzles.forEach( (puzzle) => {
+    rows.push(
+      <PuzzleRow puzzle={puzzle} />
+    )
+  });
+  return (
+    <table>
+    <thead>
+      <tr>
+        <th>Puzzle Name</th>
+        <th>Partner</th>
+        <th>Completed</th>
+      </tr>
+      <tbody>{rows}</tbody>
+    </thead>
+  </table>
+  )
+}
+
+const PUZZLES = [
+  {name: "First Puzzle", isComplete: false, participants: ["player1", "player2"]},
+  {name: "Another Puzzle", isComplete: true, participants: ["player2", "player3"]},
+  {name: "Mavlink Puzzle", isComplete: false, participants: ["player1", "player3"]}
+]
+
+function App() {
+  return (
+    <PuzzleTable puzzles={PUZZLES} />
+  );
+}
 export default App;

@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   frontend:
     image: frontend
@@ -8,8 +6,7 @@ services:
     entrypoint: npm start #tail -f /dev/null #
     build:
       context: ./frontend
-    networks:
-      church_network:
-        ipv4_address: 172.16.1.11
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
