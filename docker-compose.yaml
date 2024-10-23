@@ -12,6 +12,18 @@ services:
       - ./frontend:/app
     networks:
       - church_network
+    
+  backend:
+    build:
+      context: backend
+    environment:
+      - DATABASE_URL=postgresql://church_user:church_password@db:5432/church_db
+    depends_on:
+      - db
+    networks:
+      - church_network
+    volumes:
+      - ./backend/flask:/flask
 
   db:
     image: postgres

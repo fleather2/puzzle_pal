@@ -1,0 +1,6 @@
+flask
+loguru
+requests
+flask-cors
+sqlalchemy
+psycopg2
