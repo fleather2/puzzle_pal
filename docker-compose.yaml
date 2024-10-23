@@ -24,6 +24,7 @@ services:
       - church_network
     volumes:
       - ./backend/flask:/flask
+    entrypoint: tail -f /dev/null && python3 /flask/app.py
 
   db:
     image: postgres

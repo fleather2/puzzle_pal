@@ -4,3 +4,4 @@ requests
 flask-cors
 sqlalchemy
 psycopg2
+bcrypt
