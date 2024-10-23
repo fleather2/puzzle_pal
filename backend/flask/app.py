@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError as SqlalchemyOperationalError
 from time import sleep
 from loguru import logger
+from endpoints import add_endpoints
 
 from models import * 
 import os
@@ -50,22 +51,7 @@ engine = create_engine(url)
 
 Base.metadata.create_all(engine)
 
-### CRUD USERS ###
-@app.route('/user', methods=['POST'])
-def create_user():
-    with Session(engine) as session:
-        logger.debug(f'POST user request from {request.host}: {request.form}')
-        user = User(**request.form)
-        session.add(user)
-        session.commit()
-        return app.response_class("User created", status=200)
-
-@app.route('/user', methods=['GET'])
-def read_users():
-    with Session(engine) as session:
-        logger.debug(f'GET user request from {request.host}')
-        users = session.query(User).all()
-        return jsonify(users)
+add_endpoints(engine, app)
 
 if __name__ == '__main__':
     app.run(host=FLASK_HOST, debug = True)

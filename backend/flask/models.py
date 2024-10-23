@@ -13,21 +13,23 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
 
     # def verify_password(self, password):
     #     pswash = bcrypt.hashpw()
 
+@dataclass
 class Puzzle(Base):
     __tablename__ = "puzzle"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(unique = True)
 
+@dataclass
 class Portion(Base):
     __tablename__ = "portion"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     is_completed: Mapped[bool]
-    puzzle_id: Mapped[int] = mapped_column(ForeignKey("puzzle.id"))
-    assigned_user: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    puzzle_name: Mapped[str] = mapped_column(ForeignKey("puzzle.name"))
+    assigned_user_name: Mapped[str] = mapped_column(ForeignKey("user.name"))
