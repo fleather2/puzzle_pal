@@ -76,6 +76,7 @@ def add_endpoints(engine: Engine, app: Flask):
             assigned_user = request.form["assigned_user_name"]
             puzzle = request.form["puzzle_name"]
             p = Portion(name=name, is_completed=is_completed, assigned_user_name=assigned_user, puzzle_name=puzzle)
+            #p = Portion(name=name, is_completed=is_completed, puzzle_name=puzzle)
             session.add(p)
             session.commit()
             return app.response_class("Portion created", status=200)

@@ -23,4 +23,4 @@ requests.post(puzzle_url, puzzle_03)
 
 portion_url = f"{FLASK_URL}/portion"
 portion_01 = {'name': "A piece", "puzzle_name": puzzle_01['name'], "assigned_user_name": user_01['name']}
-# requests.post(portion_url, portion_01)
+requests.post(portion_url, portion_01)

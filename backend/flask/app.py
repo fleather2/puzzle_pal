@@ -39,15 +39,15 @@ url = URL.create(
 
 engine = create_engine(url)
 
-# for i in range(0, 5):
-#     try:
-#         if DROP_TABLES_ON_INIT:
-#             logger.info("Dropping all data")
-#             Base.metadata.drop_all(bind=engine, tables=[User.__table__, Puzzle.__table__, Portion.__table])
-#             break
-#     except:
-#         logger.error("Database init failed. Is database initialized yet? Retrying...")
-#         sleep(2)
+for i in range(0, 5):
+    try:
+        if DROP_TABLES_ON_INIT:
+            logger.info("Dropping all data")
+            Base.metadata.drop_all(bind=engine, tables=[User.__table__, Puzzle.__table__, Portion.__table__])
+            break
+    except:
+        logger.error("Database init failed. Is database initialized yet? Retrying...")
+        sleep(2)
 
 Base.metadata.create_all(engine)
 
