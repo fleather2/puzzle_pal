@@ -71,12 +71,10 @@ def add_endpoints(engine: Engine, app: Flask):
             if session.query(Portion).filter(Portion.name == name).count() > 0:
                 logger.error(f"EROR: Cannot add portion {name} because it already exists. Skipping...")
                 return app.response_class("Portion already exists", status=400)
-            #is_completed = request.form["is_completed"] if "is_completed" in request.form.keys() else False
-            is_completed = False
+            is_completed = request.form["is_completed"] if "is_completed" in request.form.keys() else False
             assigned_user = request.form["assigned_user_name"]
             puzzle = request.form["puzzle_name"]
             p = Portion(name=name, is_completed=is_completed, assigned_user_name=assigned_user, puzzle_name=puzzle)
-            #p = Portion(name=name, is_completed=is_completed, puzzle_name=puzzle)
             session.add(p)
             session.commit()
             return app.response_class("Portion created", status=200)
