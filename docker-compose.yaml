@@ -10,9 +10,24 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+    networks:
+      - church_network
+
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
-    
+      POSTGRES_USER: church_user
+      POSTGRES_PASSWORD: church_password
+      POSTGRES_DB: church_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - church_network
+
+networks:
+  church_network:
+    driver: bridge
+
+volumes:
+  db_data:
