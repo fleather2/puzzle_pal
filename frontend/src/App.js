@@ -1,48 +1,14 @@
 import './App.css';
+import Dashboard from './components/Dashboard/Dashboard'
+//import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
-function PuzzleRow( { puzzle }) {
-  // TODO define puzzle with partnernames
-  //const partnerName = puzzle;
-  const isComplete = puzzle.isComplete ? "Yes" : "No";
-  return (
-    <tr>
-      <td>{puzzle.name}</td>
-      <td>{puzzle.participants}</td>
-      <td>{isComplete}</td>
-    </tr>
-  );
-}
-
-function PuzzleTable( { puzzles }) {
-  const rows = [];
-  puzzles.forEach( (puzzle) => {
-    rows.push(
-      <PuzzleRow puzzle={puzzle} />
-    )
-  });
-  return (
-    <table>
-    <thead>
-      <tr>
-        <th>Puzzle Name</th>
-        <th>Partner</th>
-        <th>Completed</th>
-      </tr>
-      <tbody>{rows}</tbody>
-    </thead>
-  </table>
-  )
-}
-
-const PUZZLES = [
-  {name: "First Puzzle", isComplete: false, participants: ["player1", "player2"]},
-  {name: "Another Puzzle", isComplete: true, participants: ["player2", "player3"]},
-  {name: "Mavlink Puzzle", isComplete: false, participants: ["player1", "player3"]}
-]
 
 function App() {
   return (
-    <PuzzleTable puzzles={PUZZLES} />
+    <div>
+      <h1>Landing Page</h1>
+      <Dashboard />
+    </div>
   );
 }
 export default App;
