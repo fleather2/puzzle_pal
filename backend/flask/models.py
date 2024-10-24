@@ -1,8 +1,8 @@
-from sqlalchemy import ForeignKey, Table, Column
+from sqlalchemy import ForeignKey, Table, Column, LargeBinary
 from sqlalchemy.orm import DeclarativeBase, Mapped, MappedAsDataclass, mapped_column, relationship
 from typing import List
 from dataclasses import dataclass
-#import bcrypt
+import bcrypt
 
 
 class Base(DeclarativeBase):
@@ -14,10 +14,12 @@ class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True)
-    password: Mapped[str]
+    password = Column(LargeBinary)
+    password_salt = Column(LargeBinary)
 
-    # def verify_password(self, password):
-    #     pswash = bcrypt.hashpw()
+    def verify_password(self, _password: str) -> bool:
+        r = bcrypt.checkpw(bytes(_password), bytes(self.password))
+        return r
 
 @dataclass
 class Puzzle(Base):

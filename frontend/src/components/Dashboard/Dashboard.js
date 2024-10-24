@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 
 function PuzzleRow( { puzzle }) {
   // TODO define puzzle with partnernames
@@ -15,23 +16,34 @@ function PuzzleRow( { puzzle }) {
 
 function PuzzleTable( { puzzles }) {
   const rows = [];
-  puzzles.forEach( (puzzle) => {
-    rows.push(
-      <PuzzleRow puzzle={puzzle} />
-    )
-  });
+  const { user } = useAuth();
+
+
   return (
-    <table>
-    <thead>
-      <tr>
-        <th>Puzzle Name</th>
-        <th>Partner</th>
-        <th>Completed</th>
-      </tr>
-      <tbody>{rows}</tbody>
-    </thead>
-  </table>
-  )
+    <div>
+      {user ? (
+        <h1>Welcome, {user.name}!</h1>
+      ) : (
+        <h1>No access to this page</h1>
+      )}
+    </div>
+  );
+  // puzzles.forEach( (puzzle) => {
+  //   rows.push(
+  //     <PuzzleRow puzzle={puzzle} />
+  //   )
+  // });
+  // return (
+  //   <table>
+  //   <thead>
+  //     <tr>
+  //       <th>Puzzle Name</th>
+  //       <th>Partner</th>
+  //       <th>Completed</th>
+  //     </tr>
+  //     <tbody>{rows}</tbody>
+  //   </thead>
+  // </table>
 }
 
 const PUZZLES = [

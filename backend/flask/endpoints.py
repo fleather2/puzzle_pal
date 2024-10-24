@@ -3,8 +3,18 @@ from flask import Flask, request, jsonify
 from loguru import logger
 from sqlalchemy.orm import Session
 from models import *
+import bcrypt
+
+ENCODING = 'utf-8'
 
 def add_endpoints(engine: Engine, app: Flask):
+    @app.route('/login', methods=['POST'])
+    def login():
+        with Session(engine) as session:
+            logger.debug(f'POST login request from {request.host}: {request.form}')
+            username = request.form["username"]
+            password = request.form["password"]
+
     ### ACCESS USERS ### 
     @app.route('/user', methods=['POST'])
     def create_user():
@@ -14,7 +24,10 @@ def add_endpoints(engine: Engine, app: Flask):
             if session.query(User).filter(User.name == username).count() > 0:
                 logger.error(f"ERROR: Cannot add user {username} because it already exists. Skipping...")
                 return app.response_class("User already exists", status=400)
-            user = User(**request.form)
+            pwd = request.form["password"]
+            salt = bcrypt.gensalt()
+            pwd_encrypted = bcrypt.hashpw(bytes(pwd, ENCODING), salt)
+            user = User(name=username, password=pwd_encrypted, password_salt=salt)
             session.add(user)
             session.commit()
             return app.response_class("User created", status=200)
