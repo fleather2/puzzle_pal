@@ -22,9 +22,9 @@ try:
     POSTGRES_PASSWORD = env["POSTGRES_PASSWORD"]
 except KeyError as e:
     print(f"ERROR: Environment variables not set. Using defautls\n{e}")
-    POSTGRES_DB = "church_db"
-    POSTGRES_USER = "church_user"
-    POSTGRES_PASSWORD = "church_password"
+    POSTGRES_DB = "puzzle_db"
+    POSTGRES_USER = "user"
+    POSTGRES_PASSWORD = "pwd"
 
 app = Flask(__name__)
 CORS(app)

@@ -1,1 +1,1 @@
-# church_of_freigns
+# puzzle_pal

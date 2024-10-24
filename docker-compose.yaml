@@ -1,7 +1,6 @@
 services:
   frontend:
     image: frontend
-    container_name: church-frontend
     working_dir: /app/
     entrypoint: npm start #tail -f /dev/null #
     build:
@@ -11,17 +10,17 @@ services:
     volumes:
       - ./frontend:/app
     networks:
-      - church_network
+      - network
     
   backend:
     build:
       context: backend
     environment:
-      - DATABASE_URL=postgresql://church_user:church_password@db:5432/church_db
+      - DATABASE_URL=postgresql://user:pwd@db:5432/puzzle_db
     depends_on:
       - db
     networks:
-      - church_network
+      - network
     volumes:
       - ./backend/flask:/flask
     entrypoint: tail -f /dev/null && python3 /flask/app.py
@@ -30,16 +29,16 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: church_user
-      POSTGRES_PASSWORD: church_password
-      POSTGRES_DB: church_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: puzzle_db
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
-      - church_network
+      - network
 
 networks:
-  church_network:
+  network:
     driver: bridge
 
 volumes:
