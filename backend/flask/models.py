@@ -4,6 +4,7 @@ from typing import List
 from dataclasses import dataclass
 import bcrypt
 
+ENCODING = 'utf-8'
 
 class Base(DeclarativeBase):
     """SQLAlchemy default base class"""
@@ -18,7 +19,7 @@ class User(Base):
     password_salt = Column(LargeBinary)
 
     def verify_password(self, _password: str) -> bool:
-        r = bcrypt.checkpw(bytes(_password), bytes(self.password))
+        r = bcrypt.checkpw(bytes(_password, ENCODING), self.password)
         return r
 
 @dataclass

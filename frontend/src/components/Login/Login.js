@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 const LoginForm = () => {
     const formik = useFormik({
         initialValues: {
-            username: '',
+            name: '',
             password: '',
         },
         onSubmit: values => {
@@ -18,7 +18,7 @@ const LoginForm = () => {
                 type="text"
                 placeholder="Username"
                 name="username"
-                value={formik.values.username}
+                value={formik.values.name}
                 onChange={formik.handleChange}
             /> 
             <br />

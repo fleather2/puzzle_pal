@@ -8,12 +8,22 @@ import bcrypt
 ENCODING = 'utf-8'
 
 def add_endpoints(engine: Engine, app: Flask):
-    @app.route('/login', methods=['POST'])
-    def login():
+    @app.route('/authenticate_user', methods=['POST'])
+    def authenticate_user():
         with Session(engine) as session:
-            logger.debug(f'POST login request from {request.host}: {request.form}')
-            username = request.form["username"]
+            logger.debug(f'POST authenticate user request from {request.host}: {request.form}')
+            username = request.form["name"]
             password = request.form["password"]
+            user = session.query(User).filter(User.name == username).first()
+            if not user:
+                logger.error(f"ERROR: Cannot find user {username}")
+                return app.response_class("Login failed", status=400)
+            if not user.verify_password(password):
+                logger.info(f"User {username} tried to login, but password was incorrect")
+                return app.response_class("Login failed", status=400)
+            logger.info(f"User {username} logged in")
+            return app.response_class(user.name, status=200)
+            
 
     ### ACCESS USERS ### 
     @app.route('/user', methods=['POST'])
