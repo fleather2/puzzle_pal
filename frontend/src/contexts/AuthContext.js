@@ -10,8 +10,12 @@ export const AuthProvider = ( {children} ) => {
     const [user, setUser] = useState(null);
     
     useEffect(() => {
-        setUser(sessionStorage.getItem("user"));
-    });
+        const storedUser = sessionStorage.getItem("user");
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
     async function executeLogin(requestOptions) {
         return fetch("http://localhost:5000/authenticate_user", requestOptions)
         .then(response => {
