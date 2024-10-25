@@ -1,19 +1,25 @@
 import {React}  from 'react';
 import { useFormik } from 'formik';
 import { AuthProvider, useAuth } from '../../contexts/AuthContext'
-
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const {login, user} = useAuth();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
             name: '',
             password: '',
         },
-        onSubmit: values => {
+        onSubmit: async (values) => {
             console.log("Logging in");
-            console.log(login(values));
+            var result = await login(values);
+            if (result == true) { // Login successful
+                navigate("/dashboard");
+            } else {
+                console.error("Login failed")
+            }
         }
     });
 

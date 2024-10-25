@@ -9,7 +9,26 @@ export const useAuth = () => {
 export const AuthProvider = ( {children} ) => {
     const [user, setUser] = useState(null);
 
-    const login = (userData) => {
+    async function executeLogin(requestOptions) {
+        return fetch("http://localhost:5000/authenticate_user", requestOptions)
+        .then(response => {
+            if (response.status >= 400 && response.status < 600) {
+                throw new Error("Bad response from the server");
+            }
+            return response.text();
+        })
+        .then(username => {
+            console.log(username, "logged in");
+            setUser(username);
+            return true;
+        })
+        .catch(error => {
+            console.error("Error:", error)
+            return false;
+        });
+    }
+    
+    async function login(userData) {
         const data = new URLSearchParams({
             name: userData.name,
             password: userData.password
@@ -20,23 +39,11 @@ export const AuthProvider = ( {children} ) => {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
             body: data
         }
-        console.log(requestOptions);
-        fetch("http://localhost:5000/authenticate_user", requestOptions)
-        .then(response => {
-            if (response.status >= 400 && response.status < 600) {
-                throw new Error("Bad response from the server");
-            }
-            return response.text();
-        })
-        .then(username => {
-            console.log(username, "logged in");
-            setUser(username);
-            //redirect("")
-        })
-        .catch(error => {
-            console.error("Error:", error)
-        });
-    };
+        const logged_in = await executeLogin(requestOptions);
+        console.log(logged_in);
+        
+        return logged_in;
+    }
 
     const logout = () => {
         // Logic to log out user
