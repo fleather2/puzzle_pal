@@ -22,7 +22,7 @@ function PuzzleTable( { puzzles }) {
   return (
     <div>
       {user ? (
-        <h1>Welcome, {user.name}!</h1>
+        <h1>Welcome, {user}!</h1>
       ) : (
         <h1>No access to this page</h1>
       )}
