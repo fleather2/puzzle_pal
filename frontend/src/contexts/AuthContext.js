@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, {createContext, useState, useContext, useEffect} from 'react';
 
 const AuthContext = createContext();
 
@@ -8,7 +8,10 @@ export const useAuth = () => {
 
 export const AuthProvider = ( {children} ) => {
     const [user, setUser] = useState(null);
-
+    
+    useEffect(() => {
+        setUser(sessionStorage.getItem("user"));
+    });
     async function executeLogin(requestOptions) {
         return fetch("http://localhost:5000/authenticate_user", requestOptions)
         .then(response => {
@@ -20,6 +23,7 @@ export const AuthProvider = ( {children} ) => {
         .then(username => {
             console.log(username, "logged in");
             setUser(username);
+            sessionStorage.setItem("user", username);
             return true;
         })
         .catch(error => {
@@ -45,9 +49,11 @@ export const AuthProvider = ( {children} ) => {
         return logged_in;
     }
 
-    const logout = () => {
+    async function logout() {
         // Logic to log out user
         setUser(null);
+        sessionStorage.clear();
+        console.log("Logged out");
     }
 
     return <AuthContext.Provider value = {{ user, login, logout }}>
