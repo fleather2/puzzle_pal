@@ -12,6 +12,8 @@ def add_endpoints(engine: Engine, app: Flask):
     def authenticate_user():
         with Session(engine) as session:
             logger.debug(f'POST authenticate user request from {request.host}: {request.form}')
+            logger.debug(request.form.to_dict())
+            #request.form = request.get_json()
             username = request.form["name"]
             password = request.form["password"]
             user = session.query(User).filter(User.name == username).first()
@@ -23,7 +25,6 @@ def add_endpoints(engine: Engine, app: Flask):
                 return app.response_class("Login failed", status=400)
             logger.info(f"User {username} logged in")
             return app.response_class(user.name, status=200)
-            
 
     ### ACCESS USERS ### 
     @app.route('/user', methods=['POST'])
