@@ -14,11 +14,10 @@ function PuzzleRow({ puzzle }) {
 
 function PuzzleRows( ) {
   const { user } = useAuth();
+  const [puzzles, setPuzzles] = useState([]);
 
-  
-
-  async function fetchPuzzles() {
-    return fetch("http://localhost:5000/puzzle/?username=".concat(user))
+  async function populatePuzzles() {
+    const p = await fetch("http://localhost:5000/puzzle/?username=".concat(user))
     .then(response => {
         if (response.status >= 400 && response.status < 600) {
             throw new Error("Bad response from the server");
@@ -33,18 +32,13 @@ function PuzzleRows( ) {
         console.error("Error:", error)
         return false;
     });
-  }
-
-  async function populatePuzzles() {
-    const p = await fetchPuzzles();
     setPuzzles(p);
   }
 
-  const [puzzles, setPuzzles] = useState([]);
   useEffect( () => {
     populatePuzzles();
   }, [])
-  //const puzzles = fetchPuzzles();
+
   return (
     puzzles.map( function(p)  {
       return (<PuzzleRow puzzle={p} key={p.name}/>)
@@ -52,7 +46,7 @@ function PuzzleRows( ) {
   )
 }
 
-function PuzzleTable( {puzzles} ) {
+function PuzzleTable() {
   const table = (
     <table>
     <thead>
@@ -68,14 +62,14 @@ function PuzzleTable( {puzzles} ) {
   return table
 }
 
-function PuzzleTableParent( { puzzles }) {
+function PuzzleTableParent() {
   const { user } = useAuth();
   return (
     <div>
       {user ? (
         <div>
         <h1>Welcome, {user}!</h1>
-        <PuzzleTable puzzles={puzzles} />
+        <PuzzleTable />
         </div>
       ) : (
         <h1>No access to this page</h1>
@@ -85,15 +79,9 @@ function PuzzleTableParent( { puzzles }) {
  
 }
 
-const PUZZLES = [
-  {name: "First Puzzle", isComplete: false, participants: ["player1", "player2"]},
-  {name: "Another Puzzle", isComplete: true, participants: ["player2", "player3"]},
-  {name: "Mavlink Puzzle", isComplete: false, participants: ["player1", "player3"]}
-]
-
 function Dashboard() {
   return (
-    <PuzzleTableParent puzzles={PUZZLES} />
+    <PuzzleTableParent />
   );
 }
 export default Dashboard;
