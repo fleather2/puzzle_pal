@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 function PuzzleRow({ puzzle }) {
@@ -12,6 +12,46 @@ function PuzzleRow({ puzzle }) {
   );
 }
 
+function PuzzleRows( ) {
+  const { user } = useAuth();
+
+  
+
+  async function fetchPuzzles() {
+    return fetch("http://localhost:5000/puzzle/?username=".concat(user))
+    .then(response => {
+        if (response.status >= 400 && response.status < 600) {
+            throw new Error("Bad response from the server");
+        }
+        return response.json();
+    })
+    .then(puzzles => {
+        console.log(puzzles);
+        return puzzles;
+    })
+    .catch(error => {
+        console.error("Error:", error)
+        return false;
+    });
+  }
+
+  async function populatePuzzles() {
+    const p = await fetchPuzzles();
+    setPuzzles(p);
+  }
+
+  const [puzzles, setPuzzles] = useState([]);
+  useEffect( () => {
+    populatePuzzles();
+  }, [])
+  //const puzzles = fetchPuzzles();
+  return (
+    puzzles.map( function(p)  {
+      return (<PuzzleRow puzzle={p} key={p.name}/>)
+    })
+  )
+}
+
 function PuzzleTable( {puzzles} ) {
   const table = (
     <table>
@@ -21,11 +61,7 @@ function PuzzleTable( {puzzles} ) {
         <th>Partner</th>
         <th>Completed</th>
       </tr>
-        {
-          puzzles.map( function(p)  {
-            return (<PuzzleRow puzzle={p} key={p.name}/>)
-          })
-        }
+        <PuzzleRows />
       </thead>
     </table>
   )
