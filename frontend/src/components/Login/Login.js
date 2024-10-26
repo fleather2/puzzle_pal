@@ -2,6 +2,9 @@ import {React, useState}  from 'react';
 import { useFormik } from 'formik';
 import { AuthProvider, useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 
 const LoginForm = () => {
     const {login, logout, user} = useAuth();
@@ -28,7 +31,7 @@ const LoginForm = () => {
 
     return (
         <div>
-            <form onSubmit={formik.handleSubmit}>
+            <Form onSubmit={formik.handleSubmit}>
                 <input 
                     type="text"
                     placeholder="Username"
@@ -45,8 +48,8 @@ const LoginForm = () => {
                     onChange={formik.handleChange}
                 />
                 <br />
-                <button type="submit">Login</button>
-            </form>
+                <Button variant="primary" type="submit">Login</Button>
+            </Form>
             <p>{loginFailed ? "LOGIN FAILED" : ""}</p>
         </div>
     );

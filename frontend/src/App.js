@@ -5,6 +5,7 @@ import {StrictMode} from 'react';
 import LogoutButton from './components/Login/LogoutButton';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 

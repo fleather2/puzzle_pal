@@ -1,8 +1,9 @@
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 function LogoutButton() {
-    const {logout} = useAuth();
+    const {logout, user} = useAuth();
     const navigate = useNavigate();
 
     async function doLogout() {
@@ -10,9 +11,11 @@ function LogoutButton() {
         navigate("/login");
     }
     
-    return (
-        <button onClick={doLogout}>Log Out</button>
-    )
+    if (user) {
+        return (
+            <Button variant="secondary" onClick={doLogout}>Log Out</Button>
+        )
+    }
 }
 
 export default LogoutButton;
