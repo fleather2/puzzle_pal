@@ -87,6 +87,19 @@ def add_endpoints(engine: Engine, app: Flask):
             session.commit()
             return app.response_class("Deleted", status=200)
     
+    @app.route('/puzzle/', methods=['GET'])
+    def get_puzzles_by_username():
+        username = request.args.get("username")
+        with Session(engine) as session:
+            logger.debug(f'GET request for all puzzles for user {username}')
+            portions = session.query(Portion).filter(Portion.assigned_user_name == username).all()
+            puzzles = []
+            for p in portions:
+                puzzles.append(session.query(Puzzle).filter(Puzzle.name == p.puzzle_name).first())
+            return jsonify(puzzles)
+
+
+    
     ### ACCESS PORTIONS ###
     @app.route('/portion', methods=['POST'])
     def create_portion():
@@ -102,3 +115,4 @@ def add_endpoints(engine: Engine, app: Flask):
             session.add(p)
             session.commit()
             return app.response_class("Portion created", status=200)
+    
