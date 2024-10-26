@@ -1,9 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
-function PuzzleRow( { puzzle }) {
-  // TODO define puzzle with partnernames
-  //const partnerName = puzzle;
+function PuzzleRow({ puzzle }) {
   const isComplete = puzzle.isComplete ? "Yes" : "No";
   return (
     <tr>
@@ -14,41 +12,34 @@ function PuzzleRow( { puzzle }) {
   );
 }
 
-
-
-function PuzzleTable( { puzzles }) {
-  const rows = [];
-  const { user } = useAuth();
-
-  const showTables = () => {
-    puzzles.forEach( (puzzle) => {
-      rows.push(
-        <PuzzleRow puzzle={puzzle} />
-      )
-    });
-    return (
-      <table>
-      <thead>
-        <tr>
-          <th>Puzzle Name</th>
-          <th>Partner</th>
-          <th>Completed</th>
-        </tr>
-        </thead>
-        <tbody>{rows.map((puzzle) => {
-          <PuzzleRow  puzzle={puzzle}key={puzzle.name}/>;
-        })}
-        </tbody>
+function PuzzleTable( {puzzles} ) {
+  const table = (
+    <table>
+    <thead>
+      <tr>
+        <th>Puzzle Name</th>
+        <th>Partner</th>
+        <th>Completed</th>
+      </tr>
+        {
+          puzzles.map( function(p)  {
+            return (<PuzzleRow puzzle={p} key={p.name}/>)
+          })
+        }
+      </thead>
     </table>
-    )
-  }
+  )
+  return table
+}
 
+function PuzzleTableParent( { puzzles }) {
+  const { user } = useAuth();
   return (
     <div>
       {user ? (
         <div>
         <h1>Welcome, {user}!</h1>
-        {showTables()}
+        <PuzzleTable puzzles={puzzles} />
         </div>
       ) : (
         <h1>No access to this page</h1>
@@ -66,7 +57,7 @@ const PUZZLES = [
 
 function Dashboard() {
   return (
-    <PuzzleTable puzzles={PUZZLES} />
+    <PuzzleTableParent puzzles={PUZZLES} />
   );
 }
 export default Dashboard;
