@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const {login, user} = useAuth();
+    const {login, logout, user} = useAuth();
     
     const navigate = useNavigate();
     const [loginFailed, setLoginFailed] = useState(false);

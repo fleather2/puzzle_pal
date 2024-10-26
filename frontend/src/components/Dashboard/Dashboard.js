@@ -14,36 +14,48 @@ function PuzzleRow( { puzzle }) {
   );
 }
 
+
+
 function PuzzleTable( { puzzles }) {
   const rows = [];
   const { user } = useAuth();
 
+  const showTables = () => {
+    puzzles.forEach( (puzzle) => {
+      rows.push(
+        <PuzzleRow puzzle={puzzle} />
+      )
+    });
+    return (
+      <table>
+      <thead>
+        <tr>
+          <th>Puzzle Name</th>
+          <th>Partner</th>
+          <th>Completed</th>
+        </tr>
+        </thead>
+        <tbody>{rows.map((puzzle) => {
+          <PuzzleRow  puzzle={puzzle}key={puzzle.name}/>;
+        })}
+        </tbody>
+    </table>
+    )
+  }
 
   return (
     <div>
       {user ? (
+        <div>
         <h1>Welcome, {user}!</h1>
+        {showTables()}
+        </div>
       ) : (
         <h1>No access to this page</h1>
       )}
     </div>
   );
-  // puzzles.forEach( (puzzle) => {
-  //   rows.push(
-  //     <PuzzleRow puzzle={puzzle} />
-  //   )
-  // });
-  // return (
-  //   <table>
-  //   <thead>
-  //     <tr>
-  //       <th>Puzzle Name</th>
-  //       <th>Partner</th>
-  //       <th>Completed</th>
-  //     </tr>
-  //     <tbody>{rows}</tbody>
-  //   </thead>
-  // </table>
+ 
 }
 
 const PUZZLES = [
